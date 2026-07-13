@@ -1,0 +1,221 @@
+{
+  "name": "Smart Resume Collector",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Smart Resume Collector",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Full Name"
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "Education"
+            },
+            {
+              "fieldLabel": "Skills"
+            },
+            {
+              "fieldLabel": "Experience"
+            }
+          ]
+        },
+        "options": {
+          "respondWithOptions": {
+            "values": {
+              "formSubmittedText": "✅ Thank you!  Your resume has been submitted successfully.  A confirmation email has been sent to your email address."
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "03d931bc-bd61-4808-9012-e6f48d25a051",
+      "name": "On form submission",
+      "webhookId": "26bed424-5e70-4dfc-a50e-9ed718eb4617"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1n2hVB_JvXdmCDCl5_lmLHuWr0ppN1v2ld81lGLDaQJE",
+          "mode": "list",
+          "cachedResultName": "Smart Resume Collector",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1n2hVB_JvXdmCDCl5_lmLHuWr0ppN1v2ld81lGLDaQJE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1n2hVB_JvXdmCDCl5_lmLHuWr0ppN1v2ld81lGLDaQJE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Full Name",
+              "displayName": "Full Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Skills",
+              "displayName": "Skills",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Experience",
+              "displayName": "Experience",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Education",
+              "displayName": "Education",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "submittedAt",
+              "displayName": "submittedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "formMode",
+              "displayName": "formMode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "9bf84fec-4a0d-4b4e-88de-d9f8463f7406",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "PJNdcxqRsZZbAGtd",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{$json[\"Email\"]}}",
+        "subject": "Resume Submitted Successfully",
+        "message": "=Hello {{$json[\"Full Name\"]}},  Thank you for submitting your resume.  We have successfully received your information.  Our team will review your details and contact you if required.  Best regards, HR Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "80ae11cb-8f14-46c3-b4f7-aaf8bd169eda",
+      "name": "Send a message",
+      "webhookId": "6834a84a-bc65-4174-a370-8a5872946a63",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "WMZYVkZg3jxZW7dX",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "07d4225d-a380-45e0-b509-f3247b745ffc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "97398e506d4ff3bdb394c0fcebbf8f2fca0e72e5b38502d493e7b5e0275693f4"
+  },
+  "nodeGroups": [],
+  "id": "dq9GMibpp7yLH7UQ",
+  "tags": []
+}
